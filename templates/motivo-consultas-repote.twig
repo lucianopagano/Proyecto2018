@@ -1,0 +1,159 @@
+{% extends 'plantilla-principal.tpl' %}
+
+
+{% block contentHeader %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+	<script src="./js/InvocacionesAjax.js"></script>
+{% endblock %}
+
+
+{% block content %}
+
+	<div class="row">
+
+		<div class="col-md-12">
+			<a href="#" class="pdf-btn" title="Exportar a PDF">
+				<i class="fas fa-file-pdf"></i>
+			</a>
+		</div>
+
+	</div>
+
+	<div class="row">
+		<table class="table table-hover">
+			<thead>
+			<tr>
+				<th scope="col">Motivo</th>
+				<th scope="col">Cantidad</th>
+				<th scope="col">Promedio</th>
+				<th scope="col">Porcentaje</th>
+			</tr>
+			</thead>
+			<tbody>
+
+				{% for d in datos %}
+					<tr>
+					  <th scope="row">{{d.Nombre}}</th>
+					  <td>{{d.Cantidad}}</td>
+					  <td>{{d.Promedio}}</td>
+					  <td>{{d.Porcentaje}} %</td>
+					</tr>
+				{% endfor %}
+
+			</tbody>
+		</table>
+		<nav aria-label="Paginador">
+
+          	{%  set num_filas = num_filas %}
+          	{%  set tamagno_paginas = tamagno_paginas %}
+          	{%  set pagina = pagina %}
+          	{%  set total_paginas = total_paginas %}
+			{% if num_filas > 0 %}
+				<ul class="pagination">
+					<li  class="page-item {% if pagina <= 1 %}{{"disabled"}}{% endif %}" >
+						<a class="page-link" 
+						href="./index.php?ctl=ShowConsultasMotivo&pagina={{pagina - 1}}">
+							Anterior</a>
+					</li>
+					{% for pag in 1..total_paginas %}
+	                	<li class="page-item {% if pagina ==  pag  %} {{ "active" }} {% endif %}" >
+	                		<a class="page-link" 
+	                		href="./index.php?ctl=ShowConsultasMotivo&pagina={{ pag }}">{{ pag }}</a>
+	            		</li>
+					{% endfor %}
+					
+					<li class="page-item{% if pagina >= total_paginas %} {{"disabled"}}{% endif %}" >
+						<a class="page-link" 
+							href="./index.php?ctl=ShowConsultasMotivo&pagina={{pagina + 1}}" >
+						Siguiente</a>
+					</li>
+				</ul>
+			{% endif %}	
+		</nav>
+	</div>
+	
+
+	<div class="row">
+
+		<canvas id="myChart" width="300" height="100"></canvas>
+
+	</div>
+
+{% endblock %}
+
+
+{% block contentFooter %}
+
+<script>
+
+	$(".pdf-btn").on('click',function(){
+		window.print();
+	});
+
+	
+	$(document).ready(function(){
+
+		var funcionChart = function(dataApi){
+
+			var cantidades =[0,0,0,0,0,0];
+
+
+			if(dataApi != null){
+				$.each(dataApi, function (key, entry) {
+					cantidades[entry.id -1] = entry.cantidad;
+				});
+			}
+
+
+			var config = {
+				type: 'doughnut',
+				data: {
+					datasets: [{
+						data: cantidades,
+						backgroundColor: [
+				             'red',
+				             'orange',
+				             'yellow',
+				             'green',
+				             'blue',
+				             'brown'
+						],
+						label: 'Dataset 1'
+					}],
+					labels: [
+						'Receta Medica',
+						'Control por Guardia',
+						'Consulta',
+						'Intento de Suicidio',
+						'Interconsulta',
+						'Otras'
+					]
+				},
+				options: {
+					responsive: true,
+					legend: {
+						position: 'top',
+					},
+					title: {
+						display: true,
+						text: 'Porecentaje de consultas agrupadas por motivo'
+					},
+					animation: {
+						animateScale: true,
+						animateRotate: true
+					}
+				}
+			};
+
+			var ctx = document.getElementById('myChart').getContext('2d');
+			window.myDoughnut = new Chart(ctx, config);
+
+		}
+
+		SetChartConsultaMotivos(funcionChart);
+
+	});
+		
+
+</script>
+{% endblock %}

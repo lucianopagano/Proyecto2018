@@ -1,0 +1,107 @@
+body{
+	box-sizing: border-box;
+	background: #f1f1f1;
+}
+form 
+{
+	background: white;
+	height: 620px;
+}
+
+button{
+	width: 100%;
+	font-size: 17px;
+}
+
+h2.title {
+	text-align: center;
+	font-size: 20px;
+}
+
+input[type=text], input[type=password] {
+
+	width: 100%;
+    font-size: 17px;
+}
+
+label{
+	font-size: 17px;
+}
+.imgcontainer {
+    text-align: center;
+    margin: auto;
+}
+
+
+img.avatar {
+    width: 40%;
+    border-radius: 50%;
+}
+
+.container {
+    padding: 50px;
+}
+
+
+span.psw {
+    float: right;
+    padding-top: 16px;
+}
+
+
+.login-container{
+	display: block;
+	width: 33%;
+	margin-top: 10px;
+}
+
+.closebtn {
+	font-size: 17px;
+	margin-bottom: 5px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 400px) {
+
+	.login-container{
+		margin: 0 auto;
+		width: 99%;
+		height: 90%;
+		background: white;
+	}
+
+
+	body{
+		font-size: 17px;
+	}
+
+
+	.imgcontainer {
+    	margin-top: 50px;
+	}
+
+	.container{
+		margin-top: 61px;
+	}
+
+	label{
+		font-size: 17px;
+	}
+	button {
+        width: 100%;
+	    margin-top: 30px;
+	    font-size: 17px;
+	}
+	h2.title {
+	    font-size: 20px;
+	}
+
+	form{
+		height: 658px;
+	}
+    span.psw {
+       display: block;
+       float: left;
+    }
+}
+
